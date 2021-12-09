@@ -1,0 +1,335 @@
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterLabels:
+      PrimaryAvailabilityZone:
+        default: Primary Availability Zone
+      SecondaryAvailabilityZone:
+        default: Secondary Availability Zone
+      VPCCIDR:
+        default: VPC CIDR to deploy the resources
+      VPCTenancy:
+        default: ''
+      PrimaryManagementSubnetCIDR:
+        default: Subnet CIDR associated with Primary ADC Management interface
+      PrimaryClientSubnetCIDR:
+        default: Subnet CIDR associated with Primary ADC Client interface
+      PrimaryServerSubnetCIDR:
+        default: Subnet CIDR associated with Primary ADC Server interface
+      SecondaryManagementSubnetCIDR:
+        default: Subnet CIDR associated with Secondary ADC Management interface
+      SecondaryClientSubnetCIDR:
+        default: Subnet CIDR associated with Secondary ADC Client interface
+      SecondaryServerSubnetCIDR:
+        default: Subnet CIDR associated with Secondary ADC Server interface
+    ParameterGroups:
+      - Label:
+          default: Availability Zone Configuration
+        Parameters:
+          - PrimaryAvailabilityZone
+          - SecondaryAvailabilityZone
+      - Label:
+          default: VPC Configuration
+        Parameters:
+          - VPCCIDR
+          - VPCTenancy
+      - Label:
+          default: Subnet Configuration
+        Parameters:
+          - PrimaryManagementSubnetCIDR
+          - PrimaryClientSubnetCIDR
+          - PrimaryServerSubnetCIDR
+          - SecondaryManagementSubnetCIDR
+          - SecondaryClientSubnetCIDR
+          - SecondaryServerSubnetCIDR
+
+Outputs:
+  VPC:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-VPC'
+    Value: !Ref 'VPC'
+  PrimaryManagementSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PrimaryManagementSubnet'
+    Value: !Ref 'PrimaryManagementSubnet'
+  PrimaryClientSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PrimaryClientSubnet'
+    Value: !Ref 'PrimaryClientSubnet'
+  PrimaryServerSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PrimaryServerSubnet'
+    Value: !Ref 'PrimaryServerSubnet'
+  SecondaryManagementSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-SecondaryManagementSubnet'
+    Value: !Ref 'SecondaryManagementSubnet'
+  SecondaryClientSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-SecondaryClientSubnet'
+    Value: !Ref 'SecondaryClientSubnet'
+  SecondaryServerSubnet:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-SecondaryServerSubnet'
+    Value: !Ref 'SecondaryServerSubnet'
+  PublicRouteTable:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicRouteTable'
+    Value: !Ref 'PublicRouteTable'
+  PrivatePrimaryServerRouteTable:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PrivatePrimaryServerRouteTable'
+    Value: !Ref 'PrivatePrimaryServerRouteTable'
+  PrivateSecondaryServerRouteTable:
+    Description: ''
+    Export:
+      Name: !Sub '${AWS::StackName}-PrivateSecondaryServerRouteTable'
+    Value: !Ref 'PrivateSecondaryServerRouteTable'
+
+Parameters:
+  VPCCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.0.0/16
+  VPCTenancy:
+    Type: String
+    Description: ''
+    Default: default
+    AllowedValues:
+      - default
+      - dedicated
+  PrimaryManagementSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.1.0/24
+  PrimaryClientSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.2.0/24
+  PrimaryServerSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.3.0/24
+  SecondaryManagementSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.4.0/24
+  SecondaryClientSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.5.0/24
+  SecondaryServerSubnetCIDR:
+    Type: String
+    Description: ''
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+    Default: 10.0.6.0/24
+  PrimaryAvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: ''
+  SecondaryAvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: ''
+    
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  VPC:
+    Properties:
+      CidrBlock: !Ref 'VPCCIDR'
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      InstanceTenancy: !Ref 'VPCTenancy'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-VPC'
+    Type: AWS::EC2::VPC
+  InternetGateway:
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-InternetGateway'
+    Type: AWS::EC2::InternetGateway
+  VPCiGWAttachment:
+    Properties:
+      InternetGatewayId: !Ref 'InternetGateway'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::VPCGatewayAttachment
+  PrimaryManagementSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'PrimaryAvailabilityZone'
+      CidrBlock: !Ref 'PrimaryManagementSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrimaryManagementSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  PrimaryClientSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'PrimaryAvailabilityZone'
+      CidrBlock: !Ref 'PrimaryClientSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrimaryClientSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  PrimaryServerSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'PrimaryAvailabilityZone'
+      CidrBlock: !Ref 'PrimaryServerSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrimaryServerSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  SecondaryManagementSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'SecondaryAvailabilityZone'
+      CidrBlock: !Ref 'SecondaryManagementSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-SecondaryManagementSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  SecondaryClientSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'SecondaryAvailabilityZone'
+      CidrBlock: !Ref 'SecondaryClientSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-SecondaryClientSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  SecondaryServerSubnet:
+    Properties:
+      AvailabilityZone: !Ref 'SecondaryAvailabilityZone'
+      CidrBlock: !Ref 'SecondaryServerSubnetCIDR'
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-SecondaryServerSubnet'
+      VpcId: !Ref 'VPC'
+    Type: AWS::EC2::Subnet
+  PublicRouteTable:
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PublicRouteTable'
+    Type: AWS::EC2::RouteTable
+  PublicRouteTableiGWRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref 'InternetGateway'
+      RouteTableId: !Ref 'PublicRouteTable'
+    Type: AWS::EC2::Route
+  PublicRouteTablePrimaryManagementSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      SubnetId: !Ref 'PrimaryManagementSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PublicRouteTablePrimaryClientSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      SubnetId: !Ref 'PrimaryClientSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PrivateRouteTablePrimaryServerSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PrivatePrimaryServerRouteTable'
+      SubnetId: !Ref 'PrimaryServerSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PublicRouteTableSecondaryManagementSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      SubnetId: !Ref 'SecondaryManagementSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PublicRouteTableSecondaryClientSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      SubnetId: !Ref 'SecondaryClientSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PrivateRouteTableSecondaryServerSubnetAssociation:
+    Properties:
+      RouteTableId: !Ref 'PrivateSecondaryServerRouteTable'
+      SubnetId: !Ref 'SecondaryServerSubnet'
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  PrimaryAZNATEIP:
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrimaryAZNATEIP'
+    Type: AWS::EC2::EIP
+  PrimaryAZNAT:
+    Properties:
+      AllocationId: !GetAtt 'PrimaryAZNATEIP.AllocationId'
+      SubnetId: !Ref 'PrimaryClientSubnet'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrimaryAZNAT'
+    Type: AWS::EC2::NatGateway
+  SecondaryAZNATEIP:
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-SecondaryAZNATEIP'
+    Type: AWS::EC2::EIP
+  SecondaryAZNAT:
+    Properties:
+      AllocationId: !GetAtt 'SecondaryAZNATEIP.AllocationId'
+      SubnetId: !Ref 'SecondaryClientSubnet'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-SecondaryAZNAT'
+    Type: AWS::EC2::NatGateway
+  PrivatePrimaryServerRouteTable:
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrivatePrimaryServerRouteTable'
+    Type: AWS::EC2::RouteTable
+  PrivatePrimaryServerRouteTablePrimaryAZNATRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref 'PrimaryAZNAT'
+      RouteTableId: !Ref 'PrivatePrimaryServerRouteTable'
+    Type: AWS::EC2::Route
+  PrivateSecondaryServerRouteTable:
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PrivateSecondaryServerRouteTable'
+    Type: AWS::EC2::RouteTable
+  PrivateSecondaryServerRouteTableSecondaryAZNATRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref 'SecondaryAZNAT'
+      RouteTableId: !Ref 'PrivateSecondaryServerRouteTable'
+    Type: AWS::EC2::Route
