@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<HEAD>
+	<meta charset="utf-8">
+	<!-- 부트스트립을 사용하기 위한 link 등 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+ 	<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+ 	<!-- 합쳐지고 최소화된 최신 CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<title>블라블라 - CCTV 정보 확인</title>
+	<style>
+		.alert {
+			margin:20px;
+			padding-top:20px;
+			padding-bottom:20px;
+		}
+		.page-header {
+			padding-bottom:5px;	
+		}
+	</style>
+</HEAD>
+<BODY>
+	<!-- 웹 페이지의 시작 -->
+	<div>
+		<ul class="nav nav-tabs">
+  			<li role="presentation" class="active"><a href="#">Home</a></li>
+  			<li role="presentation"><a href="#">Profile</a></li>
+  			<li role="presentation"><a href="#">Messages</a></li>
+		</ul>
+	</div>
+	<div class="alert alert-info" role="alert">
+		<div class="page-header">
+  			<h1>시각장애인을 위한 실내 안내 프로그램<small> 블라블라</small></h1>
+  			<hr>
+		</div>
+
+		<!-- 페이지에 대한 설명을 적는 칸 -->
+		<p>이 페이지는 시각장애인을 위한 장애물 유무 판단 프로그램의 영상이 출력되는 화면이다.</p>
+		<br>
+
+		<!-- 실시간 영상의 출력 -->
+		<img src="http://placehold.it/800X500" alt="">
+		<br><br>
+
+		<!-- 확인하고 자 하는 3가지의 데이터를 출력 -->
+		<p>[데이터]
+		<br>현재 장애물 유무 판단 : {{isObj}} 
+		<br>거리 데이터 계산 : {{distanReuslt}}
+		<br>진동 데이터 세기 : {{vibrResult}}</p>
+	</div>
+</BODY>
